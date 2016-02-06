@@ -1,0 +1,71 @@
+Source: tuxr
+Section: user/network
+Priority: optional
+Maintainer: Stuart Howarth <showarth@marxoft.co.uk>
+Build-Depends: debhelper (>= 5), libqt4-dev
+Standards-Version: 3.7.3
+Homepage: https://github.com/marxoft/tuxr
+
+Package: tuxr
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, qt-components-hildon (>= 0.23.0)
+Description: Remote control for Linux-based set-top boxes (e.g. Dreambox).
+ Features include:
+ .
+ * Create multiple remotes.
+ * Full remote control with user-definable macro keys.
+ * View bouquets/channels.
+ * View bouquet/channel EPG.
+ * View, create and edit programme timers.
+ * View screenshot.
+XSBC-Maemo-Display-Name: TuxR
+XB-Maemo-Icon-26:
+ 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
+ YII=

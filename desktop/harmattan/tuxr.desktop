@@ -1,0 +1,8 @@
+[Desktop Entry]
+Encoding=UTF-8
+Version=1.0
+Type=Application
+Terminal=false
+Name=TuxR
+Exec=/usr/bin/invoker --type=d -s --splash=/opt/tuxr/splash/splash-portrait.png --splash-landscape=/opt/tuxr/splash/splash-landscape.png  /opt/tuxr/bin/tuxr
+Icon=/usr/share/icons/hicolor/80x80/apps/tuxr.png
