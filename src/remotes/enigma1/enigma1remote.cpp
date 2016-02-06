@@ -149,19 +149,19 @@ void Enigma1Remote::sendKey(int key) {
         sendCommand("/cgi-bin/rc?352");
         break;
     case Key_VolumeUp:
-        sendCommand("/cgi-bin/rc?10");
+        sendCommand("/cgi-bin/rc?115");
         break;
     case Key_VolumeDown:
-        sendCommand("/cgi-bin/rc?10");
+        sendCommand("/cgi-bin/rc?114");
         break;
     case Key_VolumeMute:
-        sendCommand("/cgi-bin/rc?10");
+        sendCommand("/cgi-bin/rc?113");
         break;
     case Key_BouquetUp:
-        sendCommand("/cgi-bin/rc?10");
+        sendCommand("/cgi-bin/rc?402");
         break;
     case Key_BouquetDown:
-        sendCommand("/cgi-bin/rc?10");
+        sendCommand("/cgi-bin/rc?403");
         break;
     case Key_Info:
         sendCommand("/cgi-bin/rc?358");
