@@ -231,7 +231,7 @@ maemo5 {
     TARGET.EPOCHEAPSIZE = 0x20000 0x8000000
     TARGET.EPOCSTACKSIZE = 0x14000
     
-    VERSION = 0.0.1
+    VERSION = 0.0.2
     ICON = desktop/symbian/tuxr.svg
     
     MMP_RULES += "DEBUGGABLE_UDEBONLY"

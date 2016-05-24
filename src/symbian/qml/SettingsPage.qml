@@ -48,7 +48,7 @@ MyPage {
                 title: qsTr("Screen orientation")
                 model: ScreenOrientationModel {}
                 value: settings.screenOrientation
-                onValueChanged: settings.screenOrientation = value
+                onAccepted: settings.screenOrientation = value
             }
         }
     }

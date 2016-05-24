@@ -18,7 +18,6 @@
 #define SETTINGS_H
 
 #include <QObject>
-#include <QColor>
 
 class Settings : public QObject
 {

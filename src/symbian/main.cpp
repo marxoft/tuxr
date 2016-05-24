@@ -48,11 +48,10 @@
 #include <QDeclarativeView>
 #include <qdeclarative.h>
 
-#define VERSION_NUMBER "0.0.1"
-#define ACTIVE_COLOR "#0881cb"
 #define DATE_TIME_FORMAT "dd/MM/yyyy HH:mm"
-#define DATE_FORMAT "dd/MM/yyyy"
 #define TIME_FORMAT "HH:mm"
+#define VERSION_NUMBER "0.0.2"
+#define ACTIVE_COLOR "#0881cb"
 
 void registerTypes() {
     qmlRegisterType<Enigma1ProgrammeList>("TuxR", 1, 0, "Enigma1ProgrammeList");
@@ -114,10 +113,9 @@ Q_DECL_EXPORT int main(int argc, char *argv[]) {
     context->setContextProperty("remoteKeys", &keys);
     context->setContextProperty("remotes", remotes.data());
     context->setContextProperty("settings", settings.data());
-    context->setContextProperty("ACTIVE_COLOR", ACITIVE_COLOR);
     context->setContextProperty("DATE_TIME_FORMAT", DATE_TIME_FORMAT);
-    context->setContextProperty("DATE_FORMAT", DATE_FORMAT);
     context->setContextProperty("TIME_FORMAT", TIME_FORMAT);
+    context->setContextProperty("ACTIVE_COLOR", ACTIVE_COLOR);
     context->setContextProperty("VERSION_NUMBER", VERSION_NUMBER);
     
     view.setSource(QUrl::fromLocalFile(QApplication::applicationDirPath() + "/qml/main.qml"));

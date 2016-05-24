@@ -25,8 +25,6 @@ Item {
     property alias pressed: switcher.pressed
     property bool platformInverted: false
 
-    signal checkedChanged
-
     width: parent.width
     height: switcher.height + platformStyle.paddingLarge
 
@@ -73,7 +71,5 @@ Item {
             rightMargin: platformStyle.paddingLarge
             verticalCenter: parent.verticalCenter
         }
-
-        onCheckedChanged: root.checkedChanged()
     }
 }

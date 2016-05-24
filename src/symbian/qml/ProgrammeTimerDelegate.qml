@@ -31,7 +31,6 @@ MyListItem {
             margins: platformStyle.paddingLarge
         }
         role: "Title"
-
         elide: Text.ElideRight
         text: channelTitle
     }

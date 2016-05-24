@@ -52,7 +52,7 @@ ValueListItem {
     }
 
     onSelectedIndexChanged: if (model) value = model.data(selectedIndex, "value");
-    onValueChanged: if (model) subTitle = model.data(Math.max(0, model.match(0, "value", value)), "name");
+    onValueChanged: if (model) subTitle = model.data(Math.max(0, model.match("value", value)), "name");
     onClicked: {
         loader.sourceComponent = dialog;
         loader.item.open();

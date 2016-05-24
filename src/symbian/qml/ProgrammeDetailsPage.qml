@@ -34,6 +34,7 @@ MyPage {
         
         MyToolButton {
             iconSource: "images/clock.png"
+            toolTip: qsTr("Set timer")
             enabled: (channelId) && (channelTitle)
             onClicked: {
                 var dialog = loader.load(timerDialog);

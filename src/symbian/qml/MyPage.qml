@@ -23,10 +23,6 @@ Page {
     property string title: ""
     property bool showProgressIndicator: false
 
-    anchors {
-        fill: parent
-        topMargin: title ? titleHeader.height : 0
-    }
-
+    anchors.fill: parent
     orientationLock: settings.screenOrientation
 }
