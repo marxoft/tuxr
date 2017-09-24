@@ -72,6 +72,7 @@ maemo5 {
 
     HEADERS += \
         src/maemo5/pixmapitem.h \
+        src/maemo5/screenorientationmodel.h \
         src/maemo5/settings.h
 
     SOURCES += \
@@ -85,7 +86,6 @@ maemo5 {
         src/maemo5/qml/ListSelectorButton.qml \
         src/maemo5/qml/main.qml \
         src/maemo5/qml/MultiListSelectorButton.qml \
-        src/maemo5/qml/PopupLoader.qml \
         src/maemo5/qml/ProgrammeDelegate.qml \
         src/maemo5/qml/ProgrammeDetailsDialog.qml \
         src/maemo5/qml/ProgrammeDialog.qml \
@@ -105,6 +105,7 @@ maemo5 {
         src/maemo5/qml/ServiceDelegate.qml \
         src/maemo5/qml/ServicePickSelector.qml \
         src/maemo5/qml/ServiceTab.qml \
+        src/maemo5/qml/SettingsDialog.qml \
         src/maemo5/qml/TimeSelectorButton.qml \
         src/maemo5/qml/TuxrTab.qml
     

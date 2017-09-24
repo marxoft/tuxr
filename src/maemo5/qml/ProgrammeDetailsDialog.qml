@@ -128,23 +128,40 @@ Dialog {
         }
         style: DialogButtonStyle {}
         text: qsTr("Set timer")
-        onClicked: {
-            var dialog = loader.load(timerDialog, root);
-            dialog.channelId = channelId;
-            dialog.channelTitle = channelTitle;
-            dialog.startTime = startTime;
-            dialog.endTime = endTime;
-            dialog.open();
-        }
-    }
-    
-    PopupLoader {
-        id: loader
+        onClicked: popupManager.open(timerDialog, root, {channelId: root.channelId, channelTitle: root.channelTitle,
+            startTime: root.startTime, endTime: root.endTime});
     }
     
     Component {
         id: timerDialog
         
         ProgrammeTimerDialog {}
+    }
+
+    contentItem.states: State {
+        name: "Portrait"
+        when: screen.currentOrientation == Qt.WA_Maemo5PortraitOrientation
+
+        AnchorChanges {
+            target: flickable
+            anchors.right: parent.right
+            anchors.bottom: button.top
+        }
+
+        PropertyChanges {
+            target: flickable
+            anchors.rightMargin: 0
+            anchors.bottomMargin: platformStyle.paddingMedium
+        }
+
+        PropertyChanges {
+            target: button
+            width: parent.width
+        }
+
+        PropertyChanges {
+            target: root
+            height: Math.min(680, column.height + button.height + platformStyle.paddingMedium * 2)
+        }
     }
 }

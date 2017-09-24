@@ -24,18 +24,18 @@ Dialog {
     property QtObject screenShot: instantiator.createScreenShot(settings.currentRemote, root)
     
     title: qsTr("Screenshot")
-    height: 360
+    height: image.height + imageTypeButton.height + platformStyle.paddingMedium * 2
     
     Pixmap {
         id: image
         
         anchors {
             horizontalCenter: imageTypeButton.horizontalCenter
-            top: parent.top
             bottom: imageTypeButton.top
             bottomMargin: platformStyle.paddingMedium
         }
-        width: Math.floor(Math.max(9, height * 16) / 9)
+        width: 440
+        height: 248
         smooth: true
     }
     
@@ -65,6 +65,7 @@ Dialog {
         }
         style: DialogButtonStyle {}
         text: qsTr("Reload")
+        shortcut: qsTr("r")
         onClicked: screenShot.reload(settings.screenShotImageType)
     }
     
@@ -90,6 +91,33 @@ Dialog {
             
             root.showProgressIndicator = false;
             reloadButton.enabled = true;
+        }
+    }
+
+    contentItem.states: State {
+        name: "Portrait"
+        when: screen.currentOrientation == Qt.WA_Maemo5PortraitOrientation
+
+        AnchorChanges {
+            target: imageTypeButton
+            anchors.right: parent.right
+            anchors.bottom: reloadButton.top
+        }
+
+        PropertyChanges {
+            target: imageTypeButton
+            anchors.rightMargin: 0
+            anchors.bottomMargin: platformStyle.paddingMedium
+        }
+
+        PropertyChanges {
+            target: reloadButton
+            width: parent.width
+        }
+
+        PropertyChanges {
+            target: root
+            height: image.height + imageTypeButton.height + reloadButton.height + platformStyle.paddingMedium * 3
         }
     }
     

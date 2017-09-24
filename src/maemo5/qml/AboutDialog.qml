@@ -69,11 +69,13 @@ Dialog {
                       + "<br><br>"
                       + qsTr("Left/Right: Switch between Remote/Zap views.")
                       + "<br>"
+                      + qsTr("Volume up/down: Volume control and fast service nagivation (if enabled).")
+                      + "<br>"
                       + qsTr("Ctrl+P: Show screenshot.")
                       + "<br>"
                       + qsTr("Ctrl+T: Show timers.")
                       + "<br>"
-                      + qsTr("Ctrl+R: Show remotes.")
+                      + qsTr("Ctrl+S: Show settings dialog.")
                       + "<br>"
                       + qsTr("Ctrl+H: Show about dialog.")
                       + "<br><br>"
@@ -82,6 +84,16 @@ Dialog {
                       + qsTr("Perform a long-press in empty space to edit/remove an existing macro.")
                       + "<br><br>&copy; Stuart Howarth 2016"
             }
+        }
+    }
+
+    contentItem.states: State {
+        name: "Portrait"
+        when: screen.currentOrientation == Qt.WA_Maemo5PortraitOrientation
+
+        PropertyChanges {
+            target: root
+            height: Math.min(680, column.height + platformStyle.paddingMedium)
         }
     }
 }

@@ -266,4 +266,31 @@ Dialog {
             root.showProgressIndicator = false;
         }
     }
+
+    contentItem.states: State {
+        name: "Portrait"
+        when: screen.currentOrientation == Qt.WA_Maemo5PortraitOrientation
+
+        AnchorChanges {
+            target: flickable
+            anchors.right: parent.right
+            anchors.bottom: button.top
+        }
+
+        PropertyChanges {
+            target: flickable
+            anchors.rightMargin: 0
+            anchors.bottomMargin: platformStyle.paddingMedium
+        }
+
+        PropertyChanges {
+            target: button
+            width: parent.width
+        }
+
+        PropertyChanges {
+            target: root
+            height: Math.min(680, column.height + button.height + platformStyle.paddingMedium * 2)
+        }
+    }
 }

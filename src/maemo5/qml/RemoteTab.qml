@@ -44,7 +44,7 @@ TuxrTab {
                     right: parent.right
                     top: parent.top
                 }
-                height: numberPad.height + colorPad.height + macroLabel.height
+                height: dPad.height + colorPad.height + macroLabel.height
                         + macroPad.height + platformStyle.paddingMedium * 8
                 
                 Grid {
@@ -54,11 +54,13 @@ TuxrTab {
                     
                     anchors {
                         left: parent.left
-                        right: parent.right
+                        leftMargin: platformStyle.paddingMedium
+                        right: parent.horizontalCenter
+                        rightMargin: platformStyle.paddingMedium / 2
                         top: parent.top
-                        margins: platformStyle.paddingMedium
+                        topMargin: platformStyle.paddingMedium
                     }
-                    columns: 6
+                    columns: 3
                     spacing: platformStyle.paddingMedium
                     
                     RemoteSpacer {
@@ -74,27 +76,6 @@ TuxrTab {
                     
                     RemoteSpacer {
                         width: numberPad.buttonWidth
-                    }
-                    
-                    RemoteButton {
-                        width: numberPad.buttonWidth
-                        text: remoteKeys.text(Remote.Key_VolumeUp)
-                        enabled: (remote) && (remote.keyIsEnabled(Remote.Key_VolumeUp))
-                        onClicked: remote.sendKey(Remote.Key_VolumeUp)
-                    }
-                    
-                    RemoteButton {
-                        width: numberPad.buttonWidth
-                        text: remoteKeys.text(Remote.Key_VolumeMute)
-                        enabled: (remote) && (remote.keyIsEnabled(Remote.Key_VolumeMute))
-                        onClicked: remote.sendKey(Remote.Key_VolumeMute)
-                    }
-                    
-                    RemoteButton {
-                        width: numberPad.buttonWidth
-                        text: remoteKeys.text(Remote.Key_BouquetUp)
-                        enabled: (remote) && (remote.keyIsEnabled(Remote.Key_BouquetUp))
-                        onClicked: remote.sendKey(Remote.Key_BouquetUp)
                     }
                     
                     RemoteButton {
@@ -120,27 +101,6 @@ TuxrTab {
                     
                     RemoteButton {
                         width: numberPad.buttonWidth
-                        text: remoteKeys.text(Remote.Key_VolumeDown)
-                        enabled: (remote) && (remote.keyIsEnabled(Remote.Key_VolumeDown))
-                        onClicked: remote.sendKey(Remote.Key_VolumeDown)
-                    }
-                    
-                    RemoteButton {
-                        width: numberPad.buttonWidth
-                        text: remoteKeys.text(Remote.Key_Exit)
-                        enabled: (remote) && (remote.keyIsEnabled(Remote.Key_Exit))
-                        onClicked: remote.sendKey(Remote.Key_Exit)
-                    }
-                    
-                    RemoteButton {
-                        width: numberPad.buttonWidth
-                        text: remoteKeys.text(Remote.Key_BouquetDown)
-                        enabled: (remote) && (remote.keyIsEnabled(Remote.Key_BouquetDown))
-                        onClicked: remote.sendKey(Remote.Key_BouquetDown)
-                    }
-                    
-                    RemoteButton {
-                        width: numberPad.buttonWidth
                         text: remoteKeys.text(Remote.Key_4)
                         enabled: (remote) && (remote.keyIsEnabled(Remote.Key_4))
                         onClicked: remote.sendKey(Remote.Key_4)
@@ -158,27 +118,6 @@ TuxrTab {
                         text: remoteKeys.text(Remote.Key_6)
                         enabled: (remote) && (remote.keyIsEnabled(Remote.Key_6))
                         onClicked: remote.sendKey(Remote.Key_6)
-                    }
-                    
-                    RemoteButton {
-                        width: numberPad.buttonWidth
-                        text: remoteKeys.text(Remote.Key_Info)
-                        enabled: (remote) && (remote.keyIsEnabled(Remote.Key_Info))
-                        onClicked: remote.sendKey(Remote.Key_Info)
-                    }
-                    
-                    RemoteButton {
-                        width: numberPad.buttonWidth
-                        text: remoteKeys.text(Remote.Key_Up)
-                        enabled: (remote) && (remote.keyIsEnabled(Remote.Key_Up))
-                        onClicked: remote.sendKey(Remote.Key_Up)
-                    }
-                    
-                    RemoteButton {
-                        width: numberPad.buttonWidth
-                        text: remoteKeys.text(Remote.Key_Menu)
-                        enabled: (remote) && (remote.keyIsEnabled(Remote.Key_Menu))
-                        onClicked: remote.sendKey(Remote.Key_Menu)
                     }
                     
                     RemoteButton {
@@ -204,27 +143,6 @@ TuxrTab {
                     
                     RemoteButton {
                         width: numberPad.buttonWidth
-                        text: remoteKeys.text(Remote.Key_Left)
-                        enabled: (remote) && (remote.keyIsEnabled(Remote.Key_Left))
-                        onClicked: remote.sendKey(Remote.Key_Left)
-                    }
-                    
-                    RemoteButton {
-                        width: numberPad.buttonWidth
-                        text: remoteKeys.text(Remote.Key_Enter)
-                        enabled: (remote) && (remote.keyIsEnabled(Remote.Key_Enter))
-                        onClicked: remote.sendKey(Remote.Key_Enter)
-                    }
-                    
-                    RemoteButton {
-                        width: numberPad.buttonWidth
-                        text: remoteKeys.text(Remote.Key_Right)
-                        enabled: (remote) && (remote.keyIsEnabled(Remote.Key_Right))
-                        onClicked: remote.sendKey(Remote.Key_Right)
-                    }
-                    
-                    RemoteButton {
-                        width: numberPad.buttonWidth
                         text: remoteKeys.text(Remote.Key_Back)
                         enabled: (remote) && (remote.keyIsEnabled(Remote.Key_Back))
                         onClicked: remote.sendKey(Remote.Key_Back)
@@ -243,29 +161,130 @@ TuxrTab {
                         enabled: (remote) && (remote.keyIsEnabled(Remote.Key_Forward))
                         onClicked: remote.sendKey(Remote.Key_Forward)
                     }
+                }
+                
+                Grid {
+                    id: dPad
+                    
+                    property int buttonWidth: Math.floor((width - spacing * (columns - 1)) / columns)
+                    
+                    anchors {
+                        left: parent.horizontalCenter
+                        leftMargin: platformStyle.paddingMedium / 2
+                        right: parent.right
+                        rightMargin: platformStyle.paddingMedium
+                        top: parent.top
+                        topMargin: platformStyle.paddingMedium
+                    }
+                    columns: 3
+                    spacing: platformStyle.paddingMedium
                     
                     RemoteButton {
-                        width: numberPad.buttonWidth
+                        width: dPad.buttonWidth
+                        text: remoteKeys.text(Remote.Key_VolumeUp)
+                        enabled: (remote) && (remote.keyIsEnabled(Remote.Key_VolumeUp))
+                        onClicked: remote.sendKey(Remote.Key_VolumeUp)
+                    }
+                    
+                    RemoteButton {
+                        width: dPad.buttonWidth
+                        text: remoteKeys.text(Remote.Key_VolumeMute)
+                        enabled: (remote) && (remote.keyIsEnabled(Remote.Key_VolumeMute))
+                        onClicked: remote.sendKey(Remote.Key_VolumeMute)
+                    }
+                    
+                    RemoteButton {
+                        width: dPad.buttonWidth
+                        text: remoteKeys.text(Remote.Key_BouquetUp)
+                        enabled: (remote) && (remote.keyIsEnabled(Remote.Key_BouquetUp))
+                        onClicked: remote.sendKey(Remote.Key_BouquetUp)
+                    }
+                    
+                    RemoteButton {
+                        width: dPad.buttonWidth
+                        text: remoteKeys.text(Remote.Key_VolumeDown)
+                        enabled: (remote) && (remote.keyIsEnabled(Remote.Key_VolumeDown))
+                        onClicked: remote.sendKey(Remote.Key_VolumeDown)
+                    }
+                    
+                    RemoteButton {
+                        width: dPad.buttonWidth
+                        text: remoteKeys.text(Remote.Key_Exit)
+                        enabled: (remote) && (remote.keyIsEnabled(Remote.Key_Exit))
+                        onClicked: remote.sendKey(Remote.Key_Exit)
+                    }
+                    
+                    RemoteButton {
+                        width: dPad.buttonWidth
+                        text: remoteKeys.text(Remote.Key_BouquetDown)
+                        enabled: (remote) && (remote.keyIsEnabled(Remote.Key_BouquetDown))
+                        onClicked: remote.sendKey(Remote.Key_BouquetDown)
+                    }
+                    
+                    RemoteButton {
+                        width: dPad.buttonWidth
+                        text: remoteKeys.text(Remote.Key_Info)
+                        enabled: (remote) && (remote.keyIsEnabled(Remote.Key_Info))
+                        onClicked: remote.sendKey(Remote.Key_Info)
+                    }
+                    
+                    RemoteButton {
+                        width: dPad.buttonWidth
+                        text: remoteKeys.text(Remote.Key_Up)
+                        enabled: (remote) && (remote.keyIsEnabled(Remote.Key_Up))
+                        onClicked: remote.sendKey(Remote.Key_Up)
+                    }
+                    
+                    RemoteButton {
+                        width: dPad.buttonWidth
+                        text: remoteKeys.text(Remote.Key_Menu)
+                        enabled: (remote) && (remote.keyIsEnabled(Remote.Key_Menu))
+                        onClicked: remote.sendKey(Remote.Key_Menu)
+                    }
+                    
+                    RemoteButton {
+                        width: dPad.buttonWidth
+                        text: remoteKeys.text(Remote.Key_Left)
+                        enabled: (remote) && (remote.keyIsEnabled(Remote.Key_Left))
+                        onClicked: remote.sendKey(Remote.Key_Left)
+                    }
+                    
+                    RemoteButton {
+                        width: dPad.buttonWidth
+                        text: remoteKeys.text(Remote.Key_Enter)
+                        enabled: (remote) && (remote.keyIsEnabled(Remote.Key_Enter))
+                        onClicked: remote.sendKey(Remote.Key_Enter)
+                    }
+                    
+                    RemoteButton {
+                        width: dPad.buttonWidth
+                        text: remoteKeys.text(Remote.Key_Right)
+                        enabled: (remote) && (remote.keyIsEnabled(Remote.Key_Right))
+                        onClicked: remote.sendKey(Remote.Key_Right)
+                    }
+                    
+                    RemoteButton {
+                        width: dPad.buttonWidth
                         text: remoteKeys.text(Remote.Key_Audio)
                         enabled: (remote) && (remote.keyIsEnabled(Remote.Key_Audio))
                         onClicked: remote.sendKey(Remote.Key_Audio)
                     }
                     
                     RemoteButton {
-                        width: numberPad.buttonWidth
+                        width: dPad.buttonWidth
                         text: remoteKeys.text(Remote.Key_Down)
                         enabled: (remote) && (remote.keyIsEnabled(Remote.Key_Down))
                         onClicked: remote.sendKey(Remote.Key_Down)
                     }
                     
                     RemoteButton {
-                        width: numberPad.buttonWidth
+                        width: dPad.buttonWidth
                         text: remoteKeys.text(Remote.Key_Video)
                         enabled: (remote) && (remote.keyIsEnabled(Remote.Key_Video))
                         onClicked: remote.sendKey(Remote.Key_Video)
                     }
-                }
-                
+                }               
+
                 Grid {
                     id: colorPad
                     
@@ -276,7 +295,7 @@ TuxrTab {
                         leftMargin: platformStyle.paddingMedium
                         right: parent.right
                         rightMargin: platformStyle.paddingMedium
-                        top: numberPad.bottom
+                        top: dPad.bottom
                         topMargin: platformStyle.paddingMedium * 2
                     }
                     columns: 8
@@ -389,11 +408,7 @@ TuxrTab {
                             onClicked: {
                                 if (state == "edit") {
                                     macroRepeater.currentIndex = index;
-                                    var dialog = loader.load(macroDialog, tab);
-                                    dialog.state = "edit";
-                                    dialog.text = name;
-                                    dialog.keys = value;
-                                    dialog.open();
+                                    popupManager.open(macroDialog, tab, {state: "edit", text: name, keys: value});
                                 }
                                 else {
                                     remote.sendKeys(value);
@@ -406,7 +421,7 @@ TuxrTab {
                         z: -macroRepeater.count
                         width: macroPad.buttonWidth
                         iconName: "general_add"
-                        onClicked: loader.open(macroDialog, tab)
+                        onClicked: popupManager.open(macroDialog, tab)
                     }
                 }
                 
@@ -436,21 +451,17 @@ TuxrTab {
             onStatusChanged: {
                 switch (remote.status) {
                     case Request.Active:
-                    root.showProgressIndicator = true;
-                    return;
+                        root.showProgressIndicator = true;
+                        return;
                     case Request.Error:
-                    infoBanner.showMessage(remote.errorString);
-                    break;
+                        infoBanner.showMessage(remote.errorString);
+                        break;
                     default:
-                    break;
+                        break;
                 }
                 
                 root.showProgressIndicator = false;
             }
-        }
-        
-        PopupLoader {
-            id: loader
         }
         
         Component {
@@ -468,6 +479,67 @@ TuxrTab {
                         infoBanner.showMessage(qsTr("Macro added"))
                     }
                 }
+            }
+        }
+
+        Keys.onPressed: {
+            if (!event.isAutoRepeat) {
+                switch (event.key) {
+                case Qt.Key_F7:
+                    remote.sendKey(screen.currentOrientation == Qt.WA_Maemo5PortraitOrientation
+                        ? Remote.Key_VolumeDown : Remote.Key_VolumeUp);
+                    break;
+                case Qt.Key_F8:
+                    remote.sendKey(screen.currentOrientation == Qt.WA_Maemo5PortraitOrientation
+                        ? Remote.Key_VolumeUp : Remote.Key_VolumeDown);
+                    break;
+                default:
+                    return;
+               }
+
+               event.accepted = true;
+           }
+       }
+
+        states: State {
+            name: "Portrait"
+            when: screen.currentOrientation == Qt.WA_Maemo5PortraitOrientation
+
+            AnchorChanges {
+                target: numberPad
+                anchors.right: parent.right
+            }
+
+            PropertyChanges {
+                target: numberPad
+                anchors.rightMargin: platformStyle.paddingMedium
+            }
+
+            AnchorChanges {
+                target: dPad
+                anchors.left: parent.left
+                anchors.top: numberPad.bottom
+            }
+
+            PropertyChanges {
+                target: dPad
+                anchors.leftMargin: platformStyle.paddingMedium
+            }
+
+            PropertyChanges {
+                target: colorPad
+                columns: 4
+            }
+
+            PropertyChanges {
+                target: macroPad
+                columns: 4
+            }
+
+            PropertyChanges {
+                target: container
+                height: numberPad.height + dPad.height + colorPad.height + macroLabel.height + macroPad.height
+                    + platformStyle.paddingMedium * 9
             }
         }
     }

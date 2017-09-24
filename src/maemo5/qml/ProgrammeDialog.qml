@@ -54,49 +54,12 @@ Dialog {
         }
         delegate: ProgrammeDelegate {
             onClicked: {
-                var dialog = loader.load(detailsDialog, root);
-                var programme = programmeModel.itemData(index);
-                dialog.programmeTitle = programme.title;
-                dialog.channelId = programme.channelId;
-                dialog.channelTitle = programme.channelTitle;
-                dialog.startTime = programme.startTime;
-                dialog.endTime = programme.endTime;
-                dialog.description = programme.description;
-                dialog.open();
+                var p = programmeModel.itemData(index);
+                popupManager.open(detailsDialog, root, {programmeTitle: p.title, channelId: p.channelId,
+                    channelTitle: p.channelTitle, startTime: p.startTime, endTime: p.endTime,
+                    description: p.description});
             }
-            onPressAndHold: contextMenu.popup()
-        }
-    }
-    
-    Menu {
-        id: contextMenu
-        
-        MenuItem {
-            text: qsTr("Show details")
-            onTriggered: {
-                var dialog = loader.load(detailsDialog, root);
-                var programme = programmeModel.itemData(view.currentIndex);
-                dialog.programmeTitle = programme.title;
-                dialog.channelId = programme.channelId;
-                dialog.channelTitle = programme.channelTitle;
-                dialog.startTime = programme.startTime;
-                dialog.endTime = programme.endTime;
-                dialog.description = programme.description;
-                dialog.open();
-            }
-        }
-        
-        MenuItem {
-            text: qsTr("Set timer")
-            onTriggered: {
-                var dialog = loader.load(timerDialog);
-                var programme = programmeModel.itemData(view.currentIndex);
-                dialog.startTime = programme.startTime;
-                dialog.endTime = programme.endTime;
-                dialog.channelId = programme.channelId;
-                dialog.channelTitle = programme.channelTitle;
-                dialog.open();
-            }
+            onPressAndHold: popupManager.open(contextMenu, root)
         }
     }
     
@@ -114,9 +77,30 @@ Dialog {
         font.pointSize: platformStyle.fontSizeLarge
         text: qsTr("No programmes")
     }
-    
-    PopupLoader {
-        id: loader
+
+    Component {
+        id: contextMenu
+
+        Menu {
+            MenuItem {
+                text: qsTr("Show details")
+                onTriggered: {
+                    var p = programmeModel.itemData(view.currentIndex);
+                    popupManager.open(detailsDialog, root, {programmeTitle: p.title, channelId: p.channelId,
+                        channelTitle: p.channelTitle, startTime: p.startTime, endTime: p.endTime,
+                        description: p.description});
+                }
+            }
+            
+            MenuItem {
+                text: qsTr("Set timer")
+                onTriggered: {
+                    var p = programmeModel.itemData(view.currentIndex);
+                    popupManager.open(timerDialog, {startTime: p.startTime, endTime: p.endTime,
+                        channelId: p.channelId, channelTitle: p.channelTitle});
+                }
+            }
+        }
     }
     
     Component {
@@ -129,6 +113,16 @@ Dialog {
         id: timerDialog
         
         ProgrammeTimerDialog {}
+    }
+
+    contentItem.states: State {
+        name: "Portrait"
+        when: screen.currentOrientation == Qt.WA_Maemo5PortraitOrientation
+
+        PropertyChanges {
+            target: root
+            height: 680
+        }
     }
     
     onServiceIdChanged: if (status == DialogStatus.Open) programmeModel.reload(serviceId);

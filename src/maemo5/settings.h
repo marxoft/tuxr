@@ -18,7 +18,6 @@
 #define SETTINGS_H
 
 #include <QObject>
-#include <QColor>
 
 class Settings : public QObject
 {
@@ -26,8 +25,12 @@ class Settings : public QObject
     
     Q_PROPERTY(QString currentRemote READ currentRemote WRITE setCurrentRemote
                NOTIFY currentRemoteChanged)
+    Q_PROPERTY(int screenOrientation READ screenOrientation WRITE setScreenOrientation
+               NOTIFY screenOrientationChanged)
     Q_PROPERTY(int screenShotImageType READ screenShotImageType WRITE setScreenShotImageType
                NOTIFY screenShotImageTypeChanged)
+    Q_PROPERTY(bool volumeKeysEnabled READ volumeKeysEnabled WRITE setVolumeKeysEnabled
+               NOTIFY volumeKeysEnabledChanged)
 
 public:
     ~Settings();
@@ -35,15 +38,21 @@ public:
     static Settings* instance();
     
     static QString currentRemote();
+    static int screenOrientation();
     static int screenShotImageType();
+    static bool volumeKeysEnabled();
 
 public Q_SLOTS:
     static void setCurrentRemote(const QString &id);
+    static void setScreenOrientation(int orientation);
     static void setScreenShotImageType(int imageType);
+    static void setVolumeKeysEnabled(bool enabled);
     
 Q_SIGNALS:
     void currentRemoteChanged();
+    void screenOrientationChanged();
     void screenShotImageTypeChanged();
+    void volumeKeysEnabledChanged();
 
 private:
     Settings();

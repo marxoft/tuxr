@@ -1,4 +1,4 @@
-#TuxR
+# TuxR
 
 TuxR is a remote control application for Linux-based set-top boxes (e.g. Dreambox). Currently supports only Enigma1.
 

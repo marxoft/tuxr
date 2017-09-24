@@ -49,10 +49,10 @@ Dialog {
                         return;
                     }
                     case Request.Error:
-                    infoBanner.showMessage(errorString);
-                    break;
+                        infoBanner.showMessage(errorString);
+                        break;
                     default:
-                    break;
+                        break;
                 }
                 
                 root.showProgressIndicator = (timers.status == Request.Active);
@@ -61,62 +61,13 @@ Dialog {
         }
         delegate: ProgrammeTimerDelegate {
             onClicked: {
-                var dialog = loader.load(timerDialog, root);
-                var timer = timerModel.itemData(index);
-                dialog.timerId = timer.id;
-                dialog.eventType = timer.eventType;
-                dialog.action = timer.action;
-                dialog.afterAction = timer.afterAction;
-                dialog.startTime = timer.startTime;
-                dialog.endTime = timer.endTime;
-                dialog.recurringDays = timer.recurringDays;
-                dialog.channelId = timer.channelId;
-                dialog.channelTitle = timer.channelTitle;
-                dialog.description = timer.description;
-                dialog.open();
+                var t = timerModel.itemData(index);
+                popupManager.open(timerDialog, root, {timerId: t.id, eventType: t.eventType, action: t.action,
+                    afterAction: t.afterAction, startTime: t.startTime, endTime: t.endTime,
+                    recurringDays: t.recurringDays, channelId: t.channelId, channelTitle: t.channelTitle,
+                    description: t.description});
             }
-            onPressAndHold: contextMenu.popup()
-        }
-    }
-    
-    Menu {
-        id: contextMenu
-        
-        MenuItem {
-            text: qsTr("Edit")
-            onTriggered: {
-                var dialog = loader.load(timerDialog, root);
-                var timer = timerModel.itemData(view.currentIndex);
-                dialog.timerId = timer.id;
-                dialog.eventType = timer.eventType;
-                dialog.action = timer.action;
-                dialog.afterAction = timer.afterAction;
-                dialog.startTime = timer.startTime;
-                dialog.endTime = timer.endTime;
-                dialog.recurringDays = timer.recurringDays;
-                dialog.channelId = timer.channelId;
-                dialog.channelTitle = timer.channelTitle;
-                dialog.description = timer.description;
-                dialog.open();
-            }
-        }
-        
-        MenuItem {
-            text: qsTr("Remove")
-            onTriggered: {
-                var item = timerModel.itemData(view.currentIndex);
-                timer.id = item.id;
-                timer.eventType = item.eventType;
-                timer.action = item.action;
-                timer.afterAction = item.afterAction;
-                timer.startTime = item.startTime;
-                timer.endTime = item.endTime;
-                timer.recurringDays = item.recurringDays;
-                timer.channelId = item.channelId;
-                timer.channelTitle = item.channelTitle;
-                timer.description = item.description;
-                timers.removeProgrammeTimer(timer);
-            }
+            onPressAndHold: popupManager.open(contextMenu, root)
         }
     }
     
@@ -133,20 +84,6 @@ Dialog {
         color: platformStyle.disabledTextColor
         font.pointSize: platformStyle.fontSizeLarge
         text: qsTr("No timers")
-    }
-    
-    Menu {
-        id: deleteMenu
-        
-        MenuItem {
-            text: qsTr("Clear completed timers")
-            onTriggered: timers.cleanupProgrammeTimers()
-        }
-        
-        MenuItem {
-            text: qsTr("Clear all timers")
-            onTriggered: timers.clearProgrammeTimers()
-        }
     }
     
     DialogButtonStyle {
@@ -168,7 +105,7 @@ Dialog {
             style: dialogButtonStyle
             text: qsTr("New")
             activeFocusOnPress: false
-            onClicked: loader.open(timerDialog, root)
+            onClicked: popupManager.open(timerDialog, root)
         }
         
         Button {
@@ -177,7 +114,7 @@ Dialog {
             style: dialogButtonStyle
             text: qsTr("Clear")
             activeFocusOnPress: false
-            onClicked: deleteMenu.popup()
+            onClicked: popupManager.open(deleteMenu, root)
         }
     }
     
@@ -190,26 +127,73 @@ Dialog {
         onStatusChanged: {
             switch (timers.status) {
                 case Request.Active:
-                root.showProgressIndicator = true;
-                return;
+                    root.showProgressIndicator = true;
+                    return;
                 case Request.Ready: {
                     infoBanner.showMessage(qsTr("Timer(s) removed"));
                     timerModel.reload();
                     break;
                 }
                 case Request.Error:
-                infoBanner.showMessage(timers.errorString);
-                break;
+                    infoBanner.showMessage(timers.errorString);
+                    break;
                 default:
-                break;
+                    break;
             }
             
             root.showProgressIndicator = (timerModel.status == Request.Active);
         }
     }
-    
-    PopupLoader {
-        id: loader
+
+    Component {
+        id: contextMenu
+
+        Menu {
+            MenuItem {
+                text: qsTr("Edit")
+                onTriggered: {
+                    var t = timerModel.itemData(view.currentIndex);
+                    popupManager.open(timerDialog, root, {timerId: t.id, eventType: t.eventType, action: t.action,
+                        afterAction: t.afterAction, startTime: t.startTime, endTime: t.endTime,
+                        recurringDays: t.recurringDays, channelId: t.channelId, channelTitle: t.channelTitle,
+                        description: t.description});
+                }
+            }
+            
+            MenuItem {
+                text: qsTr("Remove")
+                onTriggered: {
+                    var t = timerModel.itemData(view.currentIndex);
+                    timer.id = t.id;
+                    timer.eventType = t.eventType;
+                    timer.action = t.action;
+                    timer.afterAction = t.afterAction;
+                    timer.startTime = t.startTime;
+                    timer.endTime = t.endTime;
+                    timer.recurringDays = t.recurringDays;
+                    timer.channelId = t.channelId;
+                    timer.channelTitle = t.channelTitle;
+                    timer.description = t.description;
+                    timers.removeProgrammeTimer(timer);
+                }
+            }
+        }
+    }
+
+    Component {
+        id: deleteMenu
+
+        Menu {
+            MenuItem {
+                text: qsTr("Clear completed timers")
+                onTriggered: timers.cleanupProgrammeTimers()
+            }
+            
+            MenuItem {
+                text: qsTr("Clear all timers")
+                onTriggered: timers.clearProgrammeTimers()
+            }
+        }
     }
     
     Component {
@@ -217,6 +201,33 @@ Dialog {
         
         ProgrammeTimerDialog {            
             onAccepted: timerModel.reload()
+        }
+    }
+
+    contentItem.states: State {
+        name: "Portrait"
+        when: screen.currentOrientation == Qt.WA_Maemo5PortraitOrientation
+
+        AnchorChanges {
+            target: view
+            anchors.right: parent.right
+            anchors.bottom: buttonColumn.top
+        }
+
+        PropertyChanges {
+            target: view
+            anchors.rightMargin: 0
+            anchors.bottomMargin: platformStyle.paddingMedium
+        }
+
+        PropertyChanges {
+            target: dialogButtonStyle
+            buttonWidth: parent.width
+        }
+
+        PropertyChanges {
+            target: root
+            height: 680
         }
     }
     

@@ -35,6 +35,7 @@
 #include "remotekeymodel.h"
 #include "remotemacromodel.h"
 #include "remotetypemodel.h"
+#include "screenorientationmodel.h"
 #include "screenshotimagetypemodel.h"
 #include "service.h"
 #include "servicemodel.h"
@@ -45,7 +46,7 @@
 #include <QDeclarativeEngine>
 #include <qdeclarative.h>
 
-#define VERSION_NUMBER "0.0.1"
+#define VERSION_NUMBER "0.1.0"
 #define DATE_TIME_FORMAT "ddd, d MMMM yyyy h:mm ap"
 #define DATE_FORMAT "ddd, d MMMM yyyy"
 #define TIME_FORMAT "h:mm ap"
@@ -71,6 +72,7 @@ void registerTypes() {
     qmlRegisterType<RemoteMacroModel>("TuxR", 1, 0, "RemoteMacroModel");
     qmlRegisterType<RemoteTypeModel>("TuxR", 1, 0, "RemoteTypeModel");
     qmlRegisterType<Request>("TuxR", 1, 0, "Request");
+    qmlRegisterType<ScreenOrientationModel>("TuxR", 1, 0, "ScreenOrientationModel");
     qmlRegisterType<ScreenShotImageTypeModel>("TuxR", 1, 0, "ScreenShotImageTypeModel");
     qmlRegisterType<SelectionModel>("TuxR", 1, 0, "SelectionModel");
     qmlRegisterType<Service>("TuxR", 1, 0, "Service");

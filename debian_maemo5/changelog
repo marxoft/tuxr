@@ -1,3 +1,10 @@
+tuxr (0.1.0) unstable; urgency=low
+
+  * Add support for portrait mode.
+  * Add support for using volume keys for volume control and fast navigation in Zap view.
+
+ -- Stuart Howarth <showarth@marxoft.co.uk>  Sat, 23 Sep 2017 23:04:24 +0100
+
 tuxr (0.0.1) unstable; urgency=low
 
   * Initial Release.

@@ -45,34 +45,7 @@ Dialog {
                     infoBanner.showMessage(qsTr("Remote selected"));
                 }
             }
-            onPressAndHold: contextMenu.popup()
-        }
-    }
-    
-    Menu {
-        id: contextMenu
-        
-        MenuItem {
-            text: qsTr("Edit")
-            onTriggered: {
-                var dialog = loader.load(remoteDialog, root);
-                var remote = remoteModel.itemData(view.currentIndex);
-                dialog.remoteId = remote.id;
-                dialog.name = remote.name;
-                dialog.address = remote.address;
-                dialog.username = remote.username;
-                dialog.password = remote.password;
-                dialog.open();
-            }
-        }
-        
-        MenuItem {
-            text: qsTr("Remove")
-            onTriggered: {
-                if (remotes.remove(remoteModel.data(view.currentIndex, "id"))) {
-                    infoBanner.showMessage(qsTr("Remote removed"));
-                }
-            }
+            onPressAndHold: popupManager.open(contextMenu, root)
         }
     }
     
@@ -98,17 +71,64 @@ Dialog {
         }
         style: DialogButtonStyle {}
         text: qsTr("New")
-        onClicked: loader.open(remoteDialog, root)
+        onClicked: popupManager.open(remoteDialog, root)
     }
     
-    PopupLoader {
-        id: loader
+    Component {
+        id: contextMenu
+
+        Menu {
+            MenuItem {
+                text: qsTr("Edit")
+                onTriggered: {
+                    var remote = remoteModel.itemData(view.currentIndex);
+                    popupManager.open(remoteDialog, root, {remoteId: remote.id, name: remote.name,
+                        address: remote.address, username: remote.username, password: remote.password});
+                }
+            }
+            
+            MenuItem {
+                text: qsTr("Remove")
+                onTriggered: {
+                    if (remotes.remove(remoteModel.data(view.currentIndex, "id"))) {
+                        infoBanner.showMessage(qsTr("Remote removed"));
+                    }
+                }
+            }
+        }
     }
     
     Component {
         id: remoteDialog
         
         RemoteDialog {}
+    }
+
+    contentItem.states: State {
+        name: "Portrait"
+        when: screen.currentOrientation == Qt.WA_Maemo5PortraitOrientation
+
+        AnchorChanges {
+            target: view
+            anchors.right: parent.right
+            anchors.bottom: button.top
+        }
+
+        PropertyChanges {
+            target: view
+            anchors.rightMargin: 0
+            anchors.bottomMargin: platformStyle.paddingMedium
+        }
+
+        PropertyChanges {
+            target: button
+            width: parent.width
+        }
+
+        PropertyChanges {
+            target: root
+            height: 680
+        }
     }
     
     Component.onCompleted: remoteModel.reload()

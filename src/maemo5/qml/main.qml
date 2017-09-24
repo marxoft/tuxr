@@ -55,7 +55,7 @@ Window {
         }
         
         MenuItem {
-            action: remotesAction
+            action: settingsAction
         }
         
         MenuItem {
@@ -106,7 +106,7 @@ Window {
         shortcut: qsTr("Ctrl+P")
         text: qsTr("Screenshot")
         enabled: loader.sourceComponent == remoteView
-        onTriggered: popupLoader.open(screenShotDialog, appWindow)
+        onTriggered: popupManager.open(screenShotDialog, appWindow)
     }
     
     Action {
@@ -116,16 +116,16 @@ Window {
         shortcut: qsTr("Ctrl+T")
         text: qsTr("Timers")
         enabled: loader.sourceComponent == remoteView
-        onTriggered: popupLoader.open(timerDialog, appWindow)
+        onTriggered: popupManager.open(timerDialog, appWindow)
     }
     
     Action {
-        id: remotesAction
+        id: settingsAction
         
         autoRepeat: false
-        shortcut: qsTr("Ctrl+R")
-        text: qsTr("Remotes")
-        onTriggered: popupLoader.open(remoteDialog, appWindow)
+        shortcut: qsTr("Ctrl+S")
+        text: qsTr("Settings")
+        onTriggered: popupManager.open(settingsDialog, appWindow)
     }
     
     Action {
@@ -134,7 +134,7 @@ Window {
         autoRepeat: false
         shortcut: qsTr("Ctrl+H")
         text: qsTr("About")
-        onTriggered: popupLoader.open(aboutDialog, appWindow)
+        onTriggered: popupManager.open(aboutDialog, appWindow)
     }
     
     InformationBox {
@@ -142,7 +142,7 @@ Window {
         
         function showMessage(message) {
             infoLabel.text = message;
-            open();
+            show();
         }
         
         height: Math.max(30, infoLabel.height + platformStyle.paddingLarge)
@@ -175,7 +175,7 @@ Window {
             id: tabView
             
             anchors.fill: parent
-            tabsVisible: false
+            tabBarVisible: false
             frameVisible: false
                         
             RemoteTab {
@@ -228,16 +228,12 @@ Window {
                 Button {
                     x: Math.floor((parent.width - width) / 2)
                     text: qsTr("Add remote")
-                    onClicked: popupLoader.open(remoteDialog, appWindow)
+                    onClicked: popupManager.open(remoteDialog, appWindow)
                 }
             }
             
             Component.onCompleted: appWindow.title = "TuxR"
         }
-    }
-    
-    PopupLoader {
-        id: popupLoader
     }
     
     Component {
@@ -253,9 +249,9 @@ Window {
     }
     
     Component {
-        id: remoteDialog
+        id: settingsDialog
         
-        RemotesDialog {}
+        SettingsDialog {}
     }
     
     Component {
@@ -278,7 +274,13 @@ Window {
                 loader.sourceComponent = placeholder;
             }
         }
+        onScreenOrientationChanged: screen.orientationLock = settings.screenOrientation
     }
+
+    VolumeKeys.enabled: settings.volumeKeysEnabled
     
-    Component.onCompleted: loader.sourceComponent = (settings.currentRemote ? remoteView : placeholder);
+    Component.onCompleted: {
+        loader.sourceComponent = (settings.currentRemote ? remoteView : placeholder);
+        screen.orientationLock = settings.screenOrientation
+    }
 }

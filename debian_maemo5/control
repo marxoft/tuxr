@@ -8,7 +8,7 @@ Homepage: https://github.com/marxoft/tuxr
 
 Package: tuxr
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, qt-components-hildon (>= 0.23.0)
+Depends: ${shlibs:Depends}, ${misc:Depends}, qt-components-hildon (>= 0.26.0)
 Description: Remote control for Linux-based set-top boxes (e.g. Dreambox).
  Features include:
  .

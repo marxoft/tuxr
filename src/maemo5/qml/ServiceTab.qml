@@ -34,7 +34,38 @@ TuxrTab {
             id: view
             
             property string searchText
-            
+
+            function positionViewAtNextSection() {
+                var i = Math.max(0, currentIndex);
+                var s = serviceModel.data(i, dataModel.rootIndex, "section");
+                ++i;
+
+                while ((i < count - 1) && (serviceModel.data(i, dataModel.rootIndex, "section") == s)) {
+                    ++i;
+                }
+
+                positionViewAtIndex(i, ListView.Beginning);
+                currentIndex = i;
+            }
+
+            function positionViewAtPreviousSection() {
+                var i = Math.max(0, currentIndex);
+                var s = serviceModel.data(i, dataModel.rootIndex, "section");
+                var ss;
+                --i;
+
+                while ((i > 0) && ((ss = serviceModel.data(i, dataModel.rootIndex, "section")) == s)) {
+                    --i;
+                }
+
+                while ((i > 0) && (serviceModel.data(i - 1, dataModel.rootIndex, "section") == ss)) {
+                    --i;
+                }
+
+                positionViewAtIndex(i, ListView.Beginning);
+                currentIndex = i;
+            }
+
             anchors {
                 left: parent.left
                 right: parent.right
@@ -82,16 +113,29 @@ TuxrTab {
                             remote.changeChannel(id);
                         }
                     }
-                    onPressAndHold: contextMenu.popup()
+                    onPressAndHold: popupManager.open(contextMenu, root)
                 }
             }
             
             Keys.onPressed: {
-                if ((!event.isAutoRepeat) && (event.text)) {
-                    searchText += event.text;
-                    searchTimer.restart();
-                    event.accepted = true;
+                switch (event.key) {
+                case Qt.Key_F7:
+                    positionViewAtNextSection();
+                    break;
+                case Qt.Key_F8:
+                    positionViewAtPreviousSection();
+                    break;
+                default:
+                    if ((!event.isAutoRepeat) && (event.text)) {
+                        searchText += event.text;
+                        searchTimer.restart();
+                        break;
+                    }
+
+                    return;
                 }
+
+                event.accepted = true;
             }
             
             onSearchTextChanged: {
@@ -111,39 +155,6 @@ TuxrTab {
             
             interval: 1000
             onTriggered: view.searchText = ""
-        }
-        
-        Menu {
-            id: contextMenu
-            
-            MenuItem {
-                text: qsTr("View")
-                onTriggered: {
-                    if (serviceModel.data(view.currentIndex, dataModel.rootIndex, "serviceType")
-                        == Service.Bouquet) {
-                        dataModel.rootIndex = dataModel.modelIndex(view.currentIndex);
-                        
-                        if (view.count == 0) {
-                            serviceModel.reload(dataModel.rootIndex);
-                        }
-                    }
-                    else {
-                        remote.changeChannel(serviceModel.data(view.currentIndex,
-                        dataModel.rootIndex, "id"));
-                    }
-                }
-            }
-            
-            MenuItem {
-                text: qsTr("Show EPG")
-                onTriggered: {
-                    var dialog = loader.load(programmeDialog, root);
-                    var service = serviceModel.itemData(view.currentIndex, dataModel.rootIndex);
-                    dialog.serviceId = service.id;
-                    dialog.title = qsTr("EPG") + " - " + service.title;
-                    dialog.open();
-                }
-            }
         }
         
         Label {
@@ -213,9 +224,38 @@ TuxrTab {
                 root.showProgressIndicator = (serviceModel.status == Request.Active);
             }
         }
-        
-        PopupLoader {
-            id: loader
+
+        Component {
+            id: contextMenu
+
+            Menu {
+                MenuItem {
+                    text: qsTr("View")
+                    onTriggered: {
+                        if (serviceModel.data(view.currentIndex, dataModel.rootIndex, "serviceType")
+                            == Service.Bouquet) {
+                            dataModel.rootIndex = dataModel.modelIndex(view.currentIndex);
+                            
+                            if (view.count == 0) {
+                                serviceModel.reload(dataModel.rootIndex);
+                            }
+                        }
+                        else {
+                            remote.changeChannel(serviceModel.data(view.currentIndex,
+                            dataModel.rootIndex, "id"));
+                        }
+                    }
+                }
+                
+                MenuItem {
+                    text: qsTr("Show EPG")
+                    onTriggered: {
+                        var service = serviceModel.itemData(view.currentIndex, dataModel.rootIndex);
+                        popupManager.open(programmeDialog, root, {serviceId: service.id, title: qsTr("EPG") + " - "
+                            + service.title});
+                    }
+                }
+            }
         }
         
         Component {

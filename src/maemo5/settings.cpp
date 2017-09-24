@@ -54,6 +54,20 @@ void Settings::setCurrentRemote(const QString &id) {
     }
 }
 
+int Settings::screenOrientation() {
+    return value("screenOrientation", Qt::WA_Maemo5LandscapeOrientation).toInt();
+}
+
+void Settings::setScreenOrientation(int orientation) {
+    if (orientation != screenOrientation()) {
+        setValue("screenOrientation", orientation);
+
+        if (self) {
+            emit self->screenOrientationChanged();
+        }
+    }
+}
+
 int Settings::screenShotImageType() {
     return value("screenShotImageType", 0).toInt();
 }
@@ -64,6 +78,20 @@ void Settings::setScreenShotImageType(int imageType) {
         
         if (self) {
             emit self->screenShotImageTypeChanged();
+        }
+    }
+}
+
+bool Settings::volumeKeysEnabled() {
+    return value("volumeKeysEnabled", false).toBool();
+}
+
+void Settings::setVolumeKeysEnabled(bool enabled) {
+    if (enabled != volumeKeysEnabled()) {
+        setValue("volumeKeysEnabled", enabled);
+
+        if (self) {
+            emit self->volumeKeysEnabledChanged();
         }
     }
 }

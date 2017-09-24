@@ -70,22 +70,8 @@ Dialog {
                 text: remoteKeys.text(modelData)
             }
             
-            onClicked: contextMenu.popup()
-            onPressAndHold: contextMenu.popup()
-        }
-        
-        Menu {
-            id: contextMenu
-            
-            MenuItem {
-                text: qsTr("Remove key")
-                onTriggered: view.remove(view.currentIndex)
-            }
-            
-            MenuItem {
-                text: qsTr("Remove all keys")
-                onTriggered: view.clear()
-            }
+            onClicked: popupManager.open(contextMenu, root)
+            onPressAndHold: popupManager.open(contextMenu, root)
         }
         
         Label {
@@ -107,9 +93,8 @@ Dialog {
         id: label
         
         anchors {
-            left: parent.left
-            right: buttonColumn.left
-            rightMargin: platformStyle.paddingMedium
+            left: view.left
+            right: view.right
             bottom: textField.top
             bottomMargin: platformStyle.paddingMedium
         }
@@ -120,9 +105,8 @@ Dialog {
         id: textField
         
         anchors {
-            left: parent.left
-            right: buttonColumn.left
-            rightMargin: platformStyle.paddingMedium
+            left: view.left
+            right: view.right
             bottom: parent.bottom
         }
     }
@@ -145,7 +129,7 @@ Dialog {
             
             text: qsTr("Add key")
             style: dialogButtonStyle
-            onClicked: keySelector.open()
+            onClicked: popupManager.open(keySelector, root)
         }
         
         Button {
@@ -158,15 +142,33 @@ Dialog {
         }
     }
     
-    ListPickSelector {
+    Component {
         id: keySelector
-        
-        title: qsTr("Add key")
-        model: RemoteKeyModel {
-            id: keyModel
+
+        ListPickSelector {
+            title: qsTr("Add key")
+            model: RemoteKeyModel {
+                id: keyModel
+            }
+            textRole: "name"
+            onSelected: view.append(keyModel.data(currentIndex, "value"))
         }
-        textRole: "name"
-        onSelected: view.append(keyModel.data(currentIndex, "value"))
+    }
+
+    Component {
+        id: contextMenu
+
+        Menu {
+            MenuItem {
+                text: qsTr("Remove key")
+                onTriggered: view.remove(view.currentIndex)
+            }
+            
+            MenuItem {
+                text: qsTr("Remove all keys")
+                onTriggered: view.clear()
+            }
+        }
     }
     
     StateGroup {
@@ -179,6 +181,41 @@ Dialog {
                 target: root
                 title: qsTr("Edit macro")
             }
+        }
+    }
+
+    contentItem.states: State {
+        name: "Portrait"
+        when: screen.currentOrientation == Qt.WA_Maemo5PortraitOrientation
+
+        AnchorChanges {
+            target: view
+            anchors.right: parent.right
+        }
+
+        PropertyChanges {
+            target: view
+            anchors.rightMargin: 0
+        }
+
+        AnchorChanges {
+            target: textField
+            anchors.bottom: buttonColumn.top
+        }
+
+        PropertyChanges {
+            target: textField
+            anchors.bottomMargin: platformStyle.paddingMedium
+        }
+
+        PropertyChanges {
+            target: dialogButtonStyle
+            buttonWidth: parent.width
+        }
+
+        PropertyChanges {
+            target: root
+            height: 680
         }
     }
     

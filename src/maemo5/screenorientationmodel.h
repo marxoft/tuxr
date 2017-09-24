@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Stuart Howarth <showarth@marxoft.co.uk>
+ * Copyright (C) 2017 Stuart Howarth <showarth@marxoft.co.uk>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -14,23 +14,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import QtQuick 1.0
+#ifndef SCREENORIENTATIONMODEL_H
+#define SCREENORIENTATIONMODEL_H
 
-QtObject {
-    property QtObject _popup
+#include "selectionmodel.h"
+
+class ScreenOrientationModel : public SelectionModel
+{
+    Q_OBJECT
     
-    function load(popup, parent) {
-        if (_popup) {
-            _popup.destroy();
-        }
-        
-        _popup = popup.createObject(parent);
-        return _popup
+public:
+    explicit ScreenOrientationModel(QObject *parent = 0) :
+        SelectionModel(parent)
+    {
+        append(tr("Landscape"), Qt::WA_Maemo5LandscapeOrientation);
+        append(tr("Portrait"), Qt::WA_Maemo5PortraitOrientation);
+        append(tr("Automatic"), Qt::WA_Maemo5AutoOrientation);
     }
-    
-    function open(popup, parent) {
-        load(popup, parent);
-        _popup.open();
-        return _popup;
-    }
-}
+};
+
+#endif // SCREENORIENTATIONMODEL_H
