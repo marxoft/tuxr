@@ -40,7 +40,7 @@ ListItem {
             margins: platformStyle.paddingMedium
         }
         font.pointSize: platformStyle.fontSizeSmall
-        color: platformStyle.disabledTextColor
+        color: platformStyle.secondaryTextColor
         elide: Text.ElideRight
         text: (eventType == ProgrammeTimer.RecurringEvent
               ? Qt.formatTime(startTime, TIME_FORMAT) + " - " + Qt.formatTime(endTime, TIME_FORMAT)
